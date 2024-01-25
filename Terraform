@@ -1,0 +1,236 @@
+			TERRAFORM
+
+
+ what is Terraform	
+
+It’s a Tool used to make infrastructure Automation.
+It’s a free and open Source.
+It’s a platform independent.
+Terraform uses  a simple syntax.
+Its comes on year 2014.
+Terraform written in GO Language.
+We can call Terraform as IAAC TOOL.
+IAAC ---> Infrastructure as a code.
+
+WHY : 
+Ø It is a server orchestration tool (chef, ansible and puppet are configuration tools).
+Ø Declarative code
+Ø mutable code   
+Ø Reuseable 
+Ø All cloud providers are supported
+
+HOW IT WORKS:
+
+**  Terraform uses code to automate the infrastructure.
+We use HCL : HashiCorp Configuration Language.
+
+
+in General we used to deploy infrastructure on manual 
+
+Manual:
+1. time consume
+2. Manual work
+3. committing mistakes
+
+Automate  ===> Terraform ===> code ===> HCL
+
+
+
+IAAC 
+
+Ø Infrastructure as a Code (IaaC) is the managing and provisioning of infrastructure through code instead of manual processes. 
+Ø With IaaC, configuration files are created that contain your infrastructure specifications, which makes it easier to edit and distribute configurations.
+Code --- >Execute --- > Infrastructure
+
+ADVANTAGES:
+
+1. Reusable 
+2. Time saving
+3. Automation
+4. Avoiding mistakes
+5. Dry run
+
+DISADVANTAGES :
+
+Ø It is 3rd party tool. It takes time to accommodate new services.
+Ø BUGS
+Ø Need to trouble shoot.
+
+Terraform Commands:
+
+STATE FILE: 
+Used to store the resource information which is created by terraform
+To track the Resource activities
+In real time entire resource information is on state file.
+We need to keep it safe & Secure
+If we lost this file we cant track the infrastructure.
+Command:
+terraform state list
+
+Terraform Target:
+ => Used to destroy the Specific Resources. 
+
+terraform state list
+single target: terraform destroy --auto-approve -target="aws_instance.one[3]"
+multi targets: terraform destroy --auto-approve -target="aws_instance.one[1]" -target="aws_instance.one[2]"
+
+TERRAFORM VAR FILE :
+
+These files used to store variables separately on Terraform.
+If values haven't declared on main.tf terraform will search for variable.tf and takes values from that file.
+
+TERRAFORM REFRESH:
+It will store the values when compared with real world infrastructure when we modified the terraform values in real world infrastructure it does not replicate to state file so we need to run the command called Terraform Refresh it will refresh the state file while refreshing state file it will compare original values with the state file values if the original values are modified or change it it will be replicated to state file after running terraform refresh command.
+
+WORKSPACES:
+
+Workspace is used to create infrastructure for multiple environments.
+It will isolate each environment.
+If we work on dev env it won't affect test environment
+The default workspace is Default .
+All the resource we create on terraform by default will store on default workspace
+
+terraform workspace list	: to list the workspaces
+terraform workspace new dev	: to create workspace
+terraform workspace show	: to show current workspace
+terraform workspace select dev	: to switch to dev workspace
+terraform workspace delete dev	: to delete dev workspace
+
+
+NOTE:
+1. we need to empty the workspace befor delete
+2. we cant delete current workspace, we can switch and delete
+3. we cant delete default workspace
+
+TERRAFORM OUTPUTS:
+
+This is Block used to print particular resource information.
+When we create a resource the information will be stored on state file.
+This output block will get required values from state file when it create resource.
+
+
+TERRAFORM LOCALS: 
+
+Its a Block used to Define Values.
+Once you define a value on this block you can use them multiple times.
+Changing the value in local block will be replicated to all resources.
+** Simply      Define value once  and   use for   Multiple times.
+
+
+S3 Backend setup: 
+
+It will store terraform statefile in Bucket.
+When we modify the infrastructure  it will update the statefile in Bucket.
+
+why:
+ state file is very important in terraform
+without state file we can't track the infrastructure
+If you lost it we can't manage the infrastructure.
+
+Backup file is a backup of the terraform. tfstate file. Terraform automatically creates a Backup of the state file before making any changes to the state file. This ensures that you can recover from a corrupted or lost state file.
+
+TERRAFORM TAINT & UNTAINT:
+
+It is used to Recreate Specific Resources in Infrastructure.
+
+Why: 
+if i have an ec2 -- > crashed
+ec2 -- > code -- > main.tf 
+now to recreate this ec2 seperately we need to taint the resource
+
+terraform state list
+terraform taint aws_instance.three
+terraform apply --auto-approve 
+
+TO TAINT:  terraform taint aws_instance.three
+TO UNTAINT:  terraform untainted aws_instance.three
+
+ Terraform alias & providers is used to match resource block with particular provider blocks the main use case of using terraform alias and providers is to create multiple resources on multiple regions with the help of single main.tf file.
+
+
+Terraform import: 
+  used to import the resource configuration which we created manually by default terraform will wont track the resource that is created manually so to track the manual resources with the help of Terraform state file we can use the command called Terraform Import Command.
+
+
+VERSION CONSTRAINTS:
+we can change the versions of provider plugins.
+
+DYNAMIC BLOCK: 
+
+    It is used to reduce the length of code and
+          Reusing the code in loop.
+
+terraform state list : to list the resources
+terraform state show aws_security_group.main : to show specific resource info
+terraform state mv aws_instance.one aws_instance.two : to move state info from one to another
+terraform state rm aws_instance.one : to remove state information of a resource
+terraform state pull : to pull state file info from backend
+
+
+Provisioners:
+
+Used to Execute Commands (or) Scripts in Local Machine (or) Remote Machines.
+
+USER ACCOUNT:
+
+A user account is used by a human user to access a computer system or network.
+ 
+These accounts are typically authenticated using a username and password or some other form of authentication. 
+Usually assigned specific privileges and access rights based on the needs of the user and their role within the organization.
+
+SERVICE ACCOUNT:
+
+A service account is used by a software application or service to interact with other systems and services. 
+
+It provide automated access to resources and services, without requiring human intervention. 
+often used to run automated scripts or other programs that need to access network resources, such as databases or file shares.
+
+USER ACCOUNTS VS SERVICE ACCOUNTS:
+
+One of the key differences between user accounts and service accounts is the way they are used and managed. 
+
+Managed by the users themselves or by IT administrators who are responsible for managing user access rights and privileges. 
+
+Managed by IT administrators who are responsible for managing the application or service that uses the account.
+
+ROLE:
+
+A role is a set of permissions that allows a user or a group of users to access specific resources within a namespace. 
+
+Roles are used to define access controls at the namespace level, and they are often used to grant access to resources such as pods, services, and deployments. Roles are defined within a specific namespace, and they can only be used within that namespace.
+
+CLUSTER ROLE:
+
+A cluster role is a set of permissions that allows a user or a group of users to access resources across the entire cluster. 
+Cluster roles are used to define access controls at the cluster level, and they are often used to grant access to resources such as nodes, namespaces, and persistent volumes. 
+Cluster roles are defined at the cluster level, and they can be used by any namespace within the cluster.
+
+Roles are used to control access to resources within a specific namespace, while cluster roles are used to control access to resources across the entire cluster.
+
+
+It's worth noting that both roles and cluster roles can be associated with a role binding or a cluster role binding, which defines which users or groups have access to the resources controlled by the role or cluster role.
+
+ROLE BINDING:
+
+Role binding is used to bind a role to a user, group, or service account within a specific namespace. 
+It grants the permissions defined by the role to the bound user, group, or service account. 
+used to grant access to resources within the namespace it is defined in.
+
+CLUSTER ROLE BINDING:
+
+A cluster role binding is used to bind a cluster role to a user, group, or service account across the entire cluster. 
+It grants the permissions defined by the cluster role to the bound user, group, or service account.
+used to grant access to resources across the entire cluster.
+
+It's important to note that both role binding and cluster role binding require a reference to the subject, which can be a user, group, or service account. The subject is the entity to which the role or cluster role is being bound.
+
+
+
+RBAC Process STEPS: 
+
+1. Namespace-Wide RBAC Policies.
+1.1. Create Namespace.
+1.2. Create Service Account.
+1.3. Create Role.
+1.4. Create Role Binding.
+1.5. Test Permissions.
